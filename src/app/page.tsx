@@ -5,38 +5,12 @@ import smartphone from "../../public/smartphone.png";
 import card from "../../public/card-home.png";
 import { BsChevronDown } from "react-icons/bs";
 import CardButton from "@/components/button-home";
-import { GiSmartphone } from "react-icons/gi";
-import { MdLaptopMac } from "react-icons/md";
-import { IoPrint } from "react-icons/io5";
-import { LuGamepad2 } from "react-icons/lu";
+import { buttons } from "@/components/buttons.seed";
 import Footer from "@/components/footer";
-
-const buttons = [
-  {
-    title: "Celulares",
-    icon: <GiSmartphone />,
-    link: "test",
-  },
-  {
-    title: "Laptops e Notebooks",
-    icon: <MdLaptopMac />,
-    link: "test",
-  },
-  {
-    title: "Impressoras",
-    icon: <IoPrint />,
-    link: "test",
-  },
-  {
-    title: "Consoles e Controles",
-    icon: <LuGamepad2 />,
-    link: "test",
-  },
-];
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen min-w-screen flex-col items-center justify-center">
+    <main className="flex min-h-screen min-w-screen flex-col items-center justify-center text-[#223591]">
       <Header />
       <section className="w-full h-[85vh] mt-[15vh] relative flex justify-center items-center">
         <div className="absolute top-0 left-0 z-0">

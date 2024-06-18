@@ -1,0 +1,14 @@
+header div nav ul li::after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #223591;
+  border-radius: 10px;
+  transition: width 0.2s ease-in;
+  margin: auto;
+}
+
+header div nav ul li:hover::after {
+  width: 100%;
+}
