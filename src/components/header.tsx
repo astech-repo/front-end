@@ -4,7 +4,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 
 export default function Header() {
   return (
-    <header className="w-full h-[15vh] bg-white fixed top-0 shadow-xl flex items-center justify-center px-8">
+    <header className="z-50 w-full h-[15vh] bg-white fixed top-0 shadow-xl flex items-center justify-center px-8">
       <div className="h-full w-1/3 flex items-center justify-start">
         <Image src={logo} alt="Logo ASTech" className="h-4/5 w-auto" />
       </div>
