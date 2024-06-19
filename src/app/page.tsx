@@ -1,4 +1,3 @@
-import Header from "@/components/header";
 import Image from "next/image";
 import bghome from "../../public/bg-home.png";
 import smartphone from "../../public/smartphone.png";
@@ -6,23 +5,21 @@ import card from "../../public/card-home.png";
 import { BsChevronDown } from "react-icons/bs";
 import CardButton from "@/components/button-home";
 import { buttons } from "@/components/buttons.seed";
-import Footer from "@/components/footer";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen min-w-screen flex-col items-center justify-center text-[#223591]">
-      <Header />
-      <section className="w-full h-[85vh] mt-[15vh] relative flex justify-center items-center">
+    <main className="flex min-w-screen flex-col items-center justify-center text-[#223591]">
+      <section className="w-full h-[90vh] mt-[10vh] relative flex justify-center items-center">
         <div className="absolute top-0 left-0 z-0">
           <Image
             src={bghome}
             alt="Background Home"
-            className="h-[85vh] w-screen object-cover"
+            className="h-[90vh] w-screen object-cover"
           />
         </div>
         <div className="z-10 flex items-center justify-center">
           <div className="w-1/2 flex justify-end">
-            <Image src={smartphone} alt="Smartphone" />
+            <Image src={smartphone} alt="Smartphone"/>
           </div>
           <div className="w-1/2 flex flex-col items-start gap-6">
             <h1 className="text-white text-4xl w-3/4">
@@ -55,7 +52,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <Footer />
     </main>
   );
 }
