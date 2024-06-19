@@ -32,8 +32,13 @@ const PreencherFormulario: React.FC = () => {
   const t = searchParams.get("t");
 
   useEffect(() => {
-    t === null ? redirect("/") : "";
-  });
+    const handleRedirect = () => {
+      if (t === null) {
+        redirect("/");
+      }
+    };
+    handleRedirect();
+  }, [t]);
 
   const initialFormState: FormValues = {
     nome: "",
