@@ -66,10 +66,13 @@ const PreencherFormulario: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    if (name === "numero" || name === "imei") {
-      const newValue = value.replace(/\D/g, "");
-
+    if (name === "numero") {
+      const maxLength = 5;
+      const newValue = value.replace(/\D/g, "").slice(0, maxLength);
+      setFormValues({ ...formValues, [name]: newValue });
+    } else if (name === "imei") {
+      const maxLength = 15;
+      const newValue = value.replace(/\D/g, "").slice(0, maxLength);
       setFormValues({ ...formValues, [name]: newValue });
     } else if (name === "estado") {
       const estadoEncontrado = estados.find(
@@ -109,7 +112,7 @@ const PreencherFormulario: React.FC = () => {
         enderecoNumero: parseInt(formValues.numero),
         enderecoEstado: formValues.estado,
         enderecoCep: formValues.cep,
-        meioDeContato: "telefone"
+        meioDeContato: "telefone",
       },
       aparelho: {
         id_aparelho: 0,
@@ -130,7 +133,7 @@ const PreencherFormulario: React.FC = () => {
         sintomas: formValues.sintomas,
         comportamento: formValues.comportamentos,
         erroAlerta: formValues.errosAlertas,
-        id_aparelho: 0
+        id_aparelho: 0,
       },
     };
 
@@ -196,7 +199,7 @@ const PreencherFormulario: React.FC = () => {
             <FormInput
               label="Número"
               name="numero"
-              type="text"
+              type="number"
               value={formValues.numero}
               onChange={handleChange}
               required
@@ -258,7 +261,7 @@ const PreencherFormulario: React.FC = () => {
               <FormInput
                 label="IMEI"
                 name="imei"
-                type="text"
+                type="number"
                 value={formValues.imei}
                 onChange={handleChange}
                 required
