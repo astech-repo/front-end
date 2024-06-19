@@ -1,6 +1,6 @@
 import React from "react";
 import InputMask from "react-input-mask";
-import { FormValues } from "./page";
+import { FormValues } from "./success";
 
 interface FormInputProps {
   label: string;
@@ -32,7 +32,7 @@ export const FormInput: React.FC<FormInputProps> = ({
           mask="+99 (99) 9 9999-9999"
           value={value}
           onChange={onChange}
-        >
+        >{}
           <input
             type={type}
             className="form__field"
@@ -44,7 +44,7 @@ export const FormInput: React.FC<FormInputProps> = ({
           />
         </InputMask>
       ) : mask === "cep" ? (
-        <InputMask mask="99999-999" value={value} onChange={onChange}>
+        <InputMask mask="99999-999" value={value} onChange={onChange}>{}
           <input
             type={type}
             className="form__field"
