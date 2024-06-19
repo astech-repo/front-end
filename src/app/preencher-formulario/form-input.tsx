@@ -8,11 +8,13 @@ interface FormInputProps {
   type: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   required: boolean;
   wdth: string;
   list?: string;
   mask?: "telefone" | "cep";
 }
+
 
 export const FormInput: React.FC<FormInputProps> = ({
   label,
@@ -20,11 +22,13 @@ export const FormInput: React.FC<FormInputProps> = ({
   type,
   value,
   onChange,
+  onBlur,
   required,
   wdth,
   list,
   mask,
 }) => {
+
   return (
     <div className={`form__group field ${wdth}`}>
       {mask === "telefone" ? (
@@ -32,7 +36,7 @@ export const FormInput: React.FC<FormInputProps> = ({
           mask="+99 (99) 9 9999-9999"
           value={value}
           onChange={onChange}
-        >{}
+        >
           <input
             type={type}
             className="form__field"
@@ -41,10 +45,11 @@ export const FormInput: React.FC<FormInputProps> = ({
             id={name as string}
             required={required}
             list={list}
+            onBlur={onBlur}
           />
         </InputMask>
       ) : mask === "cep" ? (
-        <InputMask mask="99999-999" value={value} onChange={onChange}>{}
+        <InputMask mask="99999-999" value={value} onChange={onChange}>
           <input
             type={type}
             className="form__field"
@@ -73,4 +78,4 @@ export const FormInput: React.FC<FormInputProps> = ({
       </label>
     </div>
   );
-};
+}
