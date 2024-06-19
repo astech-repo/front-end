@@ -63,7 +63,7 @@ export const FormInput: React.FC<FormInputProps> = ({
       ) : (
         <input
           type={type}
-          className="form__field"
+          className="form__field appearance-none"
           placeholder={label}
           name={name as string}
           id={name as string}
