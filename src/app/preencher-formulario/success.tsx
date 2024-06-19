@@ -32,7 +32,7 @@ const PreencherFormulario: React.FC = () => {
   const t = searchParams.get("t");
 
   useEffect(() => {
-    typeof t !== "string" ? redirect("/") : "";
+    t === null ? redirect("/") : "";
   });
 
   const initialFormState: FormValues = {
