@@ -5,6 +5,7 @@ import { FormInput } from "./form-input";
 import { FormSection } from "./form-section";
 import { redirect, useSearchParams } from "next/navigation";
 import { BsChevronLeft } from "react-icons/bs";
+import { estados, garantias } from "./success.seed";
 
 export interface FormValues {
   nome: string;
@@ -65,36 +66,71 @@ const PreencherFormulario: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+
+    if (name === "numero" || name === "imei") {
+      const newValue = value.replace(/\D/g, "");
+
+      setFormValues({ ...formValues, [name]: newValue });
+    } else if (name === "estado") {
+      const estadoEncontrado = estados.find(
+        (estado) =>
+          estado.sigla === value.toUpperCase() ||
+          estado.nome.toLowerCase() === value.toLowerCase()
+      );
+
+      if (estadoEncontrado) {
+        setFormValues({ ...formValues, [name]: estadoEncontrado.sigla });
+      } else {
+        setFormValues({ ...formValues, [name]: "" });
+      }
+    } else if (name === "estadoGarantia") {
+      const garantiaEncontrada = garantias.find(
+        (garantia) => garantia.garantia === value
+      );
+      if (garantiaEncontrada) {
+        setFormValues({ ...formValues, [name]: garantiaEncontrada.garantia });
+      } else {
+        setFormValues({ ...formValues, [name]: "" });
+      }
+    } else {
+      setFormValues({ ...formValues, [name]: value });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const jsonToSend = {
       usuario: {
+        id_usuario: 0,
         nome: formValues.nome,
         email: formValues.email,
         telefone: formValues.telefone,
-        endereco_rua: formValues.endereco,
-        endereco_numero: formValues.numero,
-        endereco_estado: formValues.estado,
-        endereco_cep: formValues.cep,
+        enderecoRua: formValues.endereco,
+        enderecoNumero: parseInt(formValues.numero),
+        enderecoEstado: formValues.estado,
+        enderecoCep: formValues.cep,
+        meioDeContato: "telefone"
       },
       aparelho: {
-        tipo_aparelho: t,
+        id_aparelho: 0,
+        tipoAparelho: t,
         marca: formValues.marca,
         modelo: formValues.modelo,
         imei: formValues.imei,
-        numero_serie: formValues.numSerie,
-        estado_garantia: formValues.estadoGarantia,
-        outras_especificacoes: formValues.outrasEspecificacoes,
+        numeroSerie: formValues.numSerie,
+        estadoGarantia:
+          formValues.estadoGarantia == "Com garantia" ? true : false,
+        outrasEspecificacoes: formValues.outrasEspecificacoes,
+        id_usuario: 0,
       },
       problema: {
+        id_problema: 0,
         descricao: formValues.descProblema,
         conduta: formValues.conduta,
         sintomas: formValues.sintomas,
         comportamento: formValues.comportamentos,
-        erro_alerta: formValues.errosAlertas,
+        erroAlerta: formValues.errosAlertas,
+        id_aparelho: 0
       },
     };
 
@@ -177,34 +213,11 @@ const PreencherFormulario: React.FC = () => {
               list="estados"
             />
             <datalist id="estados">
-              <option value="AC">Acre</option>
-              <option value="AL">Alagoas</option>
-              <option value="AP">Amapá</option>
-              <option value="AM">Amazonas</option>
-              <option value="BA">Bahia</option>
-              <option value="CE">Ceará</option>
-              <option value="DF">Distrito Federal</option>
-              <option value="ES">Espírito Santo</option>
-              <option value="GO">Goiás</option>
-              <option value="MA">Maranhão</option>
-              <option value="MT">Mato Grosso</option>
-              <option value="MS">Mato Grosso do Sul</option>
-              <option value="MG">Minas Gerais</option>
-              <option value="PA">Pará</option>
-              <option value="PB">Paraíba</option>
-              <option value="PR">Paraná</option>
-              <option value="PE">Pernambuco</option>
-              <option value="PI">Piauí</option>
-              <option value="RJ">Rio de Janeiro</option>
-              <option value="RN">Rio Grande do Norte</option>
-              <option value="RS">Rio Grande do Sul</option>
-              <option value="RO">Rondônia</option>
-              <option value="RR">Roraima</option>
-              <option value="SC">Santa Catarina</option>
-              <option value="SP">São Paulo</option>
-              <option value="SE">Sergipe</option>
-              <option value="TO">Tocantins</option>
-              <option value="EX">Estrangeiro</option>
+              {estados.map((estado, index) => (
+                <option key={index} value={estado.sigla}>
+                  {estado.nome}
+                </option>
+              ))}
             </datalist>
             <FormInput
               label="CEP"
@@ -271,7 +284,15 @@ const PreencherFormulario: React.FC = () => {
               onChange={handleChange}
               required
               wdth={t === "smartphone" ? "w-1/3" : "w-1/2"}
+              list="garantia"
             />
+            <datalist id="garantia">
+              {garantias.map((garantia, index) => (
+                <option key={index} value={garantia.garantia}>
+                  {garantia.garantia}
+                </option>
+              ))}
+            </datalist>
           </div>
           <div className="flex gap-8 w-11/12">
             <FormInput

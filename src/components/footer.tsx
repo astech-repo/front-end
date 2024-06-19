@@ -2,6 +2,7 @@ import Image from "next/image";
 import logo from "../../public/logo.svg";
 import { FaInstagram, FaPhone, FaWhatsapp } from "react-icons/fa";
 import { IoMailOutline } from "react-icons/io5";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -9,11 +10,11 @@ export default function Footer() {
       <div className="w-1/5 h-4/5 flex items-center justify-center border-r-[1px] border-gray-600">
         <nav>
           <ul className="flex flex-row items-center justify-center gap-8">
-            <li className="cursor-pointer transition-all hover:opacity-75">
-              Home
+          <li className="cursor-pointer transition-all hover:opacity-75">
+              <Link href={"/home"}>Home</Link>
             </li>
             <li className="cursor-pointer transition-all hover:opacity-75">
-              Orçamento
+              <Link href={"/selecionar-aparelho"}>Orçamento</Link>
             </li>
           </ul>
         </nav>
