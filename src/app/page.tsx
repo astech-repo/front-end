@@ -43,6 +43,7 @@ export default function Home() {
                   icon={button.icon}
                   title={button.title}
                   link={button.link}
+                  tipo={button.tipo}
                 />
               ))}
             </div>
