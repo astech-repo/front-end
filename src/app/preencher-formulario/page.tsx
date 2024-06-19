@@ -1,275 +1,351 @@
-import "@/app/preencher-formulario/page.css";
+"use client";
+import React, { useEffect, useState } from "react";
+import "./page.css";
+import { FormInput } from "./form-input";
+import { FormSection } from "./form-section";
+import { redirect, useSearchParams } from "next/navigation";
+import { BsChevronLeft } from "react-icons/bs";
 
-export default function PreencherFormulario() {
-  return (
-    <main className="min-h-[85vh] max-h-fit py-10 mt-[10vh] flex flex-col gap-6 items-center justify-center text-[#223591]">
-      <h1 className="text-3xl">Formulário Técnico</h1>
-      <div className="bg-degrade w-fit h-fit px-8 py-8 gap-16 flex flex-col justify-center items-center rounded-xl shadow-md">
-        <section className="flex flex-col items-center justify-center w-full">
-          <h3 className="text-white text-xl">Dados pessoais</h3>
-          <div className="flex gap-8 w-11/12">
-            <div className="form__group field w-1/3">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Nome"
-                name="name"
-                id="name"
-                required
-              />
-              <label htmlFor="name" className="form__label">
-                Nome
-              </label>
-            </div>
-            <div className="form__group field w-1/3">
-              <input
-                type="email"
-                className="form__field"
-                placeholder="Email"
-                name="email"
-                id="email"
-                required
-              />
-              <label htmlFor="email" className="form__label">
-                Email
-              </label>
-            </div>
-            <div className="form__group field w-1/3">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Telefone"
-                name="telefone"
-                id="telefone"
-                required
-              />
-              <label htmlFor="telefone" className="form__label">
-                Telefone
-              </label>
-            </div>
-          </div>
-          <div className="flex gap-8 w-11/12">
-            <div className="form__group field w-2/5">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Endereço"
-                name="endereco"
-                id="endereco"
-                required
-              />
-              <label htmlFor="endereco" className="form__label">
-                Endereço
-              </label>
-            </div>
-            <div className="form__group field w-1/5">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Número"
-                name="numero"
-                id="numero"
-                required
-              />
-              <label htmlFor="numero" className="form__label">
-                Número
-              </label>
-            </div>
-            <div className="form__group field w-1/5">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Estado"
-                name="estado"
-                id="estado"
-                required
-              />
-              <label htmlFor="estado" className="form__label">
-                Estado
-              </label>
-            </div>
-            <div className="form__group field w-1/5">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="CEP"
-                name="cep"
-                id="cep"
-                required
-              />
-              <label htmlFor="cep" className="form__label">
-                CEP
-              </label>
-            </div>
-          </div>
-        </section>
-        <section className="flex flex-col items-center justify-center w-full">
-          <h3 className="text-white text-xl">Dados do Aparelho</h3>
-          <div className="flex gap-8 w-11/12">
-            <div className="form__group field w-1/3">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Marca"
-                name="marca"
-                id="marca"
-                required
-              />
-              <label htmlFor="marca" className="form__label">
-                Marca
-              </label>
-            </div>
-            <div className="form__group field w-2/3">
-              <input
-                type="email"
-                className="form__field"
-                placeholder="Modelo"
-                name="modelo"
-                id="modelo"
-                required
-              />
-              <label htmlFor="modelo" className="form__label">
-                Modelo
-              </label>
-            </div>
-          </div>
-          <div className="flex gap-8 w-11/12">
-            <div className="form__group field w-1/3">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="IMEI"
-                name="imei"
-                id="imei"
-                required
-              />
-              <label htmlFor="imei" className="form__label">
-                IMEI
-              </label>
-            </div>
-            <div className="form__group field w-1/3">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Número de Série"
-                name="num-serie"
-                id="num-serie"
-                required
-              />
-              <label htmlFor="num-serie" className="form__label">
-                Número de Série
-              </label>
-            </div>
-            <div className="form__group field w-1/3">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Estado da Garantia"
-                name="estado-garantia"
-                id="estado-garantia"
-                required
-              />
-              <label htmlFor="estado-garantia" className="form__label">
-                Estado da Garantia
-              </label>
-            </div>
-          </div>
-          <div className="flex gap-8 w-11/12">
-            <div className="form__group field w-full">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Outras Especificações"
-                name="outras-specs"
-                id="outras-specs"
-                required
-              />
-              <label htmlFor="outras-specs" className="form__label">
-                Outras Especificações
-              </label>
-            </div>
-          </div>
-        </section>
-        <section className="flex flex-col items-center justify-center w-full">
-          <h3 className="text-white text-xl">Problemas</h3>
-          <div className="flex gap-8 w-11/12">
-            <div className="form__group field w-full">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Descrição do Problema"
-                name="desc-problema"
-                id="desc-problema"
-                required
-              />
-              <label htmlFor="desc-problema" className="form__label">
-                Descrição do Problema
-              </label>
-            </div>
-          </div>
-          <div className="flex gap-8 w-11/12">
-            <div className="form__group field w-1/2">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Conduta do Aparelho"
-                name="conduta"
-                id="conduta"
-                required
-              />
-              <label htmlFor="conduta" className="form__label">
-                Conduta do Aparelho
-              </label>
-            </div>
-            <div className="form__group field w-1/2">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Sintomas"
-                name="sintomas"
-                id="sintomas"
-                required
-              />
-              <label htmlFor="sintomas" className="form__label">
-                Sintomas
-              </label>
-            </div>
-          </div>
-          <div className="flex gap-8 w-11/12">
-            <div className="form__group field w-1/2">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Erros e/ou Alertas"
-                name="erros-alertas"
-                id="erros-alertas"
-                required
-              />
-              <label htmlFor="erros-alertas" className="form__label">
-                Erros e/ou Alertas
-              </label>
-            </div>
-            <div className="form__group field w-1/2">
-              <input
-                type="text"
-                className="form__field"
-                placeholder="Comportamentos"
-                name="comportamentos"
-                id="comportamentos"
-                required
-              />
-              <label htmlFor="comportamentos" className="form__label">
-                Comportamentos
-              </label>
-            </div>
-          </div>
-
-        </section>
-      </div>
-      <div className="flex justify-center items-center gap-6">
-        <button className="bg-degrade px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110">Enviar</button>
-        <button className="bg-red-700 px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110">Enviar como emergencial</button>
-      </div>
-    </main>
-  );
+export interface FormValues {
+  nome: string;
+  email: string;
+  telefone: string;
+  endereco: string;
+  numero: string;
+  estado: string;
+  cep: string;
+  marca: string;
+  modelo: string;
+  imei: string;
+  numSerie: string;
+  estadoGarantia: string;
+  outrasEspecificacoes: string;
+  descProblema: string;
+  conduta: string;
+  sintomas: string;
+  errosAlertas: string;
+  comportamentos: string;
 }
+
+const PreencherFormulario: React.FC = () => {
+  const searchParams = useSearchParams();
+  const t = searchParams.get("t");
+
+  useEffect(() => {
+    typeof t !== "string" ? redirect("/") : "";
+  });
+
+  const initialFormState: FormValues = {
+    nome: "",
+    email: "",
+    telefone: "",
+    endereco: "",
+    numero: "",
+    estado: "",
+    cep: "",
+    marca: "",
+    modelo: "",
+    imei: "",
+    numSerie: "",
+    estadoGarantia: "",
+    outrasEspecificacoes: "",
+    descProblema: "",
+    conduta: "",
+    sintomas: "",
+    errosAlertas: "",
+    comportamentos: "",
+  };
+
+  const [formValues, setFormValues] = useState<FormValues>(initialFormState);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const jsonToSend = {
+      usuario: {
+        nome: formValues.nome,
+        email: formValues.email,
+        telefone: formValues.telefone,
+        endereco_rua: formValues.endereco,
+        endereco_numero: formValues.numero,
+        endereco_estado: formValues.estado,
+        endereco_cep: formValues.cep,
+      },
+      aparelho: {
+        tipo_aparelho: t,
+        marca: formValues.marca,
+        modelo: formValues.modelo,
+        imei: formValues.imei,
+        numero_serie: formValues.numSerie,
+        estado_garantia: formValues.estadoGarantia,
+        outras_especificacoes: formValues.outrasEspecificacoes,
+      },
+      problema: {
+        descricao: formValues.descProblema,
+        conduta: formValues.conduta,
+        sintomas: formValues.sintomas,
+        comportamento: formValues.comportamentos,
+        erro_alerta: formValues.errosAlertas,
+      },
+    };
+
+    // lógica para enviar o formulário
+    console.log(jsonToSend);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="min-h-[85vh] max-h-fit py-10 mt-[10vh] flex flex-col gap-6 items-center justify-center text-[#223591]"
+    >
+      <h1 className="text-3xl w-2/3 text-center relative">
+        <BsChevronLeft
+          onClick={() => (window.location.href = "/selecionar-aparelho")}
+          className="absolute left-0 cursor-pointer transition-opacity hover
+"
+        />{" "}
+        Formulário Técnico
+      </h1>
+      <div className="bg-degrade w-fit h-fit px-8 py-8 gap-16 flex flex-col justify-center items-center rounded-xl shadow-md">
+        <FormSection title="Dados pessoais">
+          <div className="flex gap-8 w-11/12">
+            <FormInput
+              label="Nome"
+              name="nome"
+              type="text"
+              value={formValues.nome}
+              onChange={handleChange}
+              required
+              wdth="w-1/3"
+            />
+            <FormInput
+              label="Email"
+              name="email"
+              type="email"
+              value={formValues.email}
+              onChange={handleChange}
+              required
+              wdth="w-1/3"
+            />
+            <FormInput
+              label="Telefone"
+              name="telefone"
+              type="text"
+              value={formValues.telefone}
+              onChange={handleChange}
+              required
+              wdth="w-1/3"
+              mask="telefone"
+            />
+          </div>
+          <div className="flex items-end gap-8 w-11/12">
+            <FormInput
+              label="Endereço"
+              name="endereco"
+              type="text"
+              value={formValues.endereco}
+              onChange={handleChange}
+              required
+              wdth="w-2/5"
+            />
+            <FormInput
+              label="Número"
+              name="numero"
+              type="text"
+              value={formValues.numero}
+              onChange={handleChange}
+              required
+              wdth="w-1/5"
+            />
+            <FormInput
+              label="Estado"
+              name="estado"
+              type="text"
+              value={formValues.estado}
+              onChange={handleChange}
+              required
+              wdth="w-1/5"
+              list="estados"
+            />
+            <datalist id="estados">
+              <option value="AC">Acre</option>
+              <option value="AL">Alagoas</option>
+              <option value="AP">Amapá</option>
+              <option value="AM">Amazonas</option>
+              <option value="BA">Bahia</option>
+              <option value="CE">Ceará</option>
+              <option value="DF">Distrito Federal</option>
+              <option value="ES">Espírito Santo</option>
+              <option value="GO">Goiás</option>
+              <option value="MA">Maranhão</option>
+              <option value="MT">Mato Grosso</option>
+              <option value="MS">Mato Grosso do Sul</option>
+              <option value="MG">Minas Gerais</option>
+              <option value="PA">Pará</option>
+              <option value="PB">Paraíba</option>
+              <option value="PR">Paraná</option>
+              <option value="PE">Pernambuco</option>
+              <option value="PI">Piauí</option>
+              <option value="RJ">Rio de Janeiro</option>
+              <option value="RN">Rio Grande do Norte</option>
+              <option value="RS">Rio Grande do Sul</option>
+              <option value="RO">Rondônia</option>
+              <option value="RR">Roraima</option>
+              <option value="SC">Santa Catarina</option>
+              <option value="SP">São Paulo</option>
+              <option value="SE">Sergipe</option>
+              <option value="TO">Tocantins</option>
+              <option value="EX">Estrangeiro</option>
+            </datalist>
+            <FormInput
+              label="CEP"
+              name="cep"
+              type="text"
+              value={formValues.cep}
+              onChange={handleChange}
+              required
+              wdth="w-1/5"
+              mask="cep"
+            />
+          </div>
+        </FormSection>
+
+        <FormSection title="Dados do Aparelho">
+          <div className="flex gap-8 w-11/12">
+            <FormInput
+              label="Marca"
+              name="marca"
+              type="text"
+              value={formValues.marca}
+              onChange={handleChange}
+              required
+              wdth="w-1/2"
+            />
+            <FormInput
+              label="Modelo"
+              name="modelo"
+              type="text"
+              value={formValues.modelo}
+              onChange={handleChange}
+              required
+              wdth="w-1/2"
+            />
+          </div>
+          <div className="flex gap-8 w-11/12">
+            {t === "smartphone" ? (
+              <FormInput
+                label="IMEI"
+                name="imei"
+                type="text"
+                value={formValues.imei}
+                onChange={handleChange}
+                required
+                wdth="w-1/3"
+              />
+            ) : (
+              ""
+            )}
+            <FormInput
+              label="Número de Série"
+              name="numSerie"
+              type="text"
+              value={formValues.numSerie}
+              onChange={handleChange}
+              required
+              wdth={t === "smartphone" ? "w-1/3" : "w-1/2"}
+            />
+            <FormInput
+              label="Estado da Garantia"
+              name="estadoGarantia"
+              type="text"
+              value={formValues.estadoGarantia}
+              onChange={handleChange}
+              required
+              wdth={t === "smartphone" ? "w-1/3" : "w-1/2"}
+            />
+          </div>
+          <div className="flex gap-8 w-11/12">
+            <FormInput
+              label="Outras Especificações"
+              name="outrasEspecificacoes"
+              type="text"
+              value={formValues.outrasEspecificacoes}
+              onChange={handleChange}
+              required
+              wdth="w-full"
+            />
+          </div>
+        </FormSection>
+
+        <FormSection title="Problemas">
+          <div className="flex gap-8 w-11/12">
+            <FormInput
+              label="Descrição do Problema"
+              name="descProblema"
+              type="text"
+              value={formValues.descProblema}
+              onChange={handleChange}
+              required
+              wdth="w-full"
+            />
+          </div>
+          <div className="flex gap-8 w-11/12">
+            <FormInput
+              label="Conduta do Aparelho"
+              name="conduta"
+              type="text"
+              value={formValues.conduta}
+              onChange={handleChange}
+              required
+              wdth="w-1/2"
+            />
+            <FormInput
+              label="Sintomas"
+              name="sintomas"
+              type="text"
+              value={formValues.sintomas}
+              onChange={handleChange}
+              required
+              wdth="w-1/2"
+            />
+          </div>
+          <div className="flex gap-8 w-11/12">
+            <FormInput
+              label="Erros e/ou Alertas"
+              name="errosAlertas"
+              type="text"
+              value={formValues.errosAlertas}
+              onChange={handleChange}
+              required
+              wdth="w-1/2"
+            />
+            <FormInput
+              label="Comportamentos"
+              name="comportamentos"
+              type="text"
+              value={formValues.comportamentos}
+              onChange={handleChange}
+              required
+              wdth="w-1/2"
+            />
+          </div>
+        </FormSection>
+      </div>
+
+      <div className="flex justify-center items-center gap-6">
+        <button className="bg-degrade px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110">
+          Enviar
+        </button>
+        <button className="bg-red-700 px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110">
+          Enviar como emergencial
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default PreencherFormulario;

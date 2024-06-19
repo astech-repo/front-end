@@ -12,6 +12,7 @@ export default function SelecionarAparelho() {
             link={button.link}
             title={button.title}
             icon={button.icon}
+            tipo={button.tipo}
           />
         ))}
       </div>
