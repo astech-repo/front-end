@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Days_One } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
-const days_one = Days_One({preload: false, weight: ['400']});
+const days_one = Days_One({ preload: false, weight: ["400"] });
 
 export const metadata: Metadata = {
   title: "ASTech",
@@ -19,7 +21,11 @@ export default function RootLayout({
       <head>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
       </head>
-      <body className={days_one.className}>{children}</body>
+      <body className={days_one.className}>
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

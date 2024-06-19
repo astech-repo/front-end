@@ -7,21 +7,21 @@ export const buttons = [
   {
     title: "Celulares",
     icon: <GiSmartphone />,
-    link: "test",
+    link: "/preencher-formulario",
   },
   {
     title: "Laptops e Notebooks",
     icon: <MdLaptopMac />,
-    link: "test",
+    link: "/preencher-formulario",
   },
   {
     title: "Impressoras",
     icon: <IoPrint />,
-    link: "test",
+    link: "/preencher-formulario",
   },
   {
     title: "Consoles e Controles",
     icon: <LuGamepad2 />,
-    link: "test",
+    link: "/preencher-formulario",
   },
 ];

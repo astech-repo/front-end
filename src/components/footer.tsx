@@ -5,7 +5,7 @@ import { IoMailOutline } from "react-icons/io5";
 
 export default function Footer() {
   return (
-    <footer className="w-full h-[15vh] bg-white shadow-xl flex items-center justify-center px-8">
+    <footer className="w-full h-[15vh] bg-white shadow-xl flex items-center justify-center px-8 text-[#223591]">
       <div className="w-1/5 h-4/5 flex items-center justify-center border-r-[1px] border-gray-600">
         <nav>
           <ul className="flex flex-row items-center justify-center gap-8">
