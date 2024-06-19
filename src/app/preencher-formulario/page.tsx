@@ -1,4 +1,4 @@
-import "@/app/preencher-formulario/style.scss";
+import "@/app/preencher-formulario/page.module.scss";
 
 export default function PreencherFormulario() {
   return (
