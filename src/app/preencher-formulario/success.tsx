@@ -6,6 +6,8 @@ import { FormSection } from "./form-section";
 import { redirect, useSearchParams } from "next/navigation";
 import { BsChevronLeft } from "react-icons/bs";
 import { estados, garantias } from "./success.seed";
+import { Spinner, useDisclosure, useToast } from "@chakra-ui/react";
+import ModalSuccess from "./modal-success";
 
 export interface FormValues {
   nome: string;
@@ -31,6 +33,9 @@ export interface FormValues {
 const PreencherFormulario: React.FC = () => {
   const searchParams = useSearchParams();
   const t = searchParams.get("t");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const handleRedirect = () => {
@@ -100,8 +105,25 @@ const PreencherFormulario: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const SendModal = (tipoModal: string) => {
+    setIsLoading(true)
+    const anyFieldEmpty = Object.values(formValues).some(
+      (value) => value === ""
+    );
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 3000);
+
+    if (anyFieldEmpty) {
+      toast({
+        title: "Envio não realizado",
+        description: "Preencha todos os campos.",
+        status: "error",
+        duration: 5000,
+        isClosable: false,
+      });
+      return;
+    }
     const jsonToSend = {
       usuario: {
         id_usuario: 0,
@@ -122,7 +144,7 @@ const PreencherFormulario: React.FC = () => {
         imei: formValues.imei,
         numeroSerie: formValues.numSerie,
         estadoGarantia:
-          formValues.estadoGarantia == "Com garantia" ? true : false,
+          formValues.estadoGarantia == "Com garantia",
         outrasEspecificacoes: formValues.outrasEspecificacoes,
         id_usuario: 0,
       },
@@ -136,16 +158,19 @@ const PreencherFormulario: React.FC = () => {
         id_aparelho: 0,
       },
     };
-
     // lógica para enviar o formulário
     console.log(jsonToSend);
+
+    setTimeout(() => {
+      onOpen();
+      setTimeout(() => {
+        onClose();
+      }, 8000);
+    }, 2000);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="min-h-[85vh] max-h-fit py-10 mt-[10vh] flex flex-col gap-6 items-center justify-center text-[#223591]"
-    >
+    <div className="min-h-[85vh] max-h-fit py-10 mt-[10vh] flex flex-col gap-6 items-center justify-center text-[#223591]">
       <h1 className="text-3xl w-2/3 text-center relative">
         <BsChevronLeft
           onClick={() => (window.location.href = "/selecionar-aparelho")}
@@ -217,7 +242,7 @@ const PreencherFormulario: React.FC = () => {
             />
             <datalist id="estados">
               {estados.map((estado, index) => (
-                <option key={index} value={estado.sigla}>
+                <option key={index++} value={estado.sigla}>
                   {estado.nome}
                 </option>
               ))}
@@ -291,7 +316,7 @@ const PreencherFormulario: React.FC = () => {
             />
             <datalist id="garantia">
               {garantias.map((garantia, index) => (
-                <option key={index} value={garantia.garantia}>
+                <option key={index++} value={garantia.garantia}>
                   {garantia.garantia}
                 </option>
               ))}
@@ -365,15 +390,23 @@ const PreencherFormulario: React.FC = () => {
         </FormSection>
       </div>
 
+      <ModalSuccess onModalClose={onClose} isModalOpen={isOpen} />
+
       <div className="flex justify-center items-center gap-6">
-        <button className="bg-degrade px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110">
-          Enviar
+        <button
+          onClick={() => SendModal("n")}
+          className={`bg-degrade h-10 w-32 px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110 ${isLoading ? "cursor-not-allowed opacity-60" : ""}`}
+        >
+          {isLoading ? <Spinner /> : "Enviar"}
         </button>
-        <button className="bg-red-700 px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110">
-          Enviar como emergencial
+        <button
+          onClick={() => SendModal("e")}
+          className={`bg-red-700 h-10 w-[18rem] px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110 ${isLoading ? "cursor-not-allowed opacity-60" : ""}`}
+        >
+          {isLoading ? <Spinner /> : "Enviar como emergencial"}
         </button>
       </div>
-    </form>
+    </div>
   );
 };
 
