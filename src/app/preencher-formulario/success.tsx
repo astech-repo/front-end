@@ -8,6 +8,7 @@ import { BsChevronLeft } from "react-icons/bs";
 import { estados, garantias } from "./success.seed";
 import { Spinner, useDisclosure, useToast } from "@chakra-ui/react";
 import ModalSuccess from "./modal-success";
+import ModalPagamento from "./modal-pagamento";
 
 export interface FormValues {
   nome: string;
@@ -36,6 +37,7 @@ const PreencherFormulario: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [whatModal, setWhatModal] = useState<string>("d");
 
   useEffect(() => {
     const handleRedirect = () => {
@@ -106,18 +108,21 @@ const PreencherFormulario: React.FC = () => {
   };
 
   const SendModal = (tipoModal: string) => {
-    setIsLoading(true)
+    setIsLoading(true);
     const anyFieldEmpty = Object.values(formValues).some(
       (value) => value === ""
     );
+    const mailValidation = Object.values(formValues).some(
+      (value) => value.includes("@") && value.includes(".com")
+    );
     setTimeout(() => {
-      setIsLoading(false)
+      setIsLoading(false);
     }, 3000);
 
-    if (anyFieldEmpty) {
+    if (anyFieldEmpty || !mailValidation) {
       toast({
         title: "Envio não realizado",
-        description: "Preencha todos os campos.",
+        description: "Preencha todos os campos corretamente.",
         status: "error",
         duration: 5000,
         isClosable: false,
@@ -143,8 +148,7 @@ const PreencherFormulario: React.FC = () => {
         modelo: formValues.modelo,
         imei: formValues.imei,
         numeroSerie: formValues.numSerie,
-        estadoGarantia:
-          formValues.estadoGarantia == "Com garantia",
+        estadoGarantia: formValues.estadoGarantia == "Com garantia",
         outrasEspecificacoes: formValues.outrasEspecificacoes,
         id_usuario: 0,
       },
@@ -159,6 +163,9 @@ const PreencherFormulario: React.FC = () => {
       },
     };
     // lógica para enviar o formulário
+
+    setWhatModal(tipoModal);
+
     console.log(jsonToSend);
 
     setTimeout(() => {
@@ -389,19 +396,26 @@ const PreencherFormulario: React.FC = () => {
           </div>
         </FormSection>
       </div>
-
-      <ModalSuccess onModalClose={onClose} isModalOpen={isOpen} />
+      {whatModal === "n" ? (
+        <ModalSuccess onModalClose={onClose} isModalOpen={isOpen} />
+      ) : (
+        <ModalPagamento onModalClose={onClose} isModalOpen={isOpen} />
+      )}
 
       <div className="flex justify-center items-center gap-6">
         <button
           onClick={() => SendModal("n")}
-          className={`bg-degrade h-10 w-32 px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110 ${isLoading ? "cursor-not-allowed opacity-60" : ""}`}
+          className={`bg-degrade h-10 w-32 px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110 ${
+            isLoading ? "cursor-not-allowed opacity-60" : ""
+          }`}
         >
           {isLoading ? <Spinner /> : "Enviar"}
         </button>
         <button
           onClick={() => SendModal("e")}
-          className={`bg-red-700 h-10 w-[18rem] px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110 ${isLoading ? "cursor-not-allowed opacity-60" : ""}`}
+          className={`bg-red-700 h-10 w-[18rem] px-6 py-2 text-white text-md rounded-md shadow-md transition-all hover:brightness-110 ${
+            isLoading ? "cursor-not-allowed opacity-60" : ""
+          }`}
         >
           {isLoading ? <Spinner /> : "Enviar como emergencial"}
         </button>
