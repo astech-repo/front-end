@@ -6,9 +6,16 @@ import { FormSection } from "./form-section";
 import { redirect, useSearchParams } from "next/navigation";
 import { BsChevronLeft } from "react-icons/bs";
 import { estados, garantias } from "./success.seed";
-import { Spinner, useDisclosure, useToast } from "@chakra-ui/react";
+import {
+  Button,
+  Spinner,
+  Tooltip,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import ModalSuccess from "./modal-success";
 import ModalPagamento from "./modal-pagamento";
+import { IoHelp } from "react-icons/io5";
 
 export interface FormValues {
   nome: string;
@@ -109,9 +116,14 @@ const PreencherFormulario: React.FC = () => {
 
   const SendModal = (tipoModal: string) => {
     setIsLoading(true);
-    const anyFieldEmpty = Object.values(formValues).some(
-      (value) => value === ""
-    );
+    const anyFieldEmpty = Object.entries(formValues).some(([key, value]) => {
+      if (key === "imei") {
+        return false;
+      }
+
+      return value === "";
+    });
+
     const mailValidation = Object.values(formValues).some(
       (value) => value.includes("@") && value.includes(".com")
     );
@@ -181,9 +193,8 @@ const PreencherFormulario: React.FC = () => {
       <h1 className="text-3xl w-2/3 text-center relative">
         <BsChevronLeft
           onClick={() => (window.location.href = "/selecionar-aparelho")}
-          className="absolute left-0 cursor-pointer transition-opacity hover
-"
-        />{" "}
+          className="absolute left-0 cursor-pointer transition-opacity hover"
+        />
         Formulário Técnico
       </h1>
       <div className="bg-degrade w-fit h-fit px-8 py-8 gap-16 flex flex-col justify-center items-center rounded-xl shadow-md">
@@ -419,6 +430,17 @@ const PreencherFormulario: React.FC = () => {
         >
           {isLoading ? <Spinner /> : "Enviar como emergencial"}
         </button>
+        <Tooltip
+          hasArrow
+          label="O envio emergencial torna sua solicitação como prioridade, sendo resolvida antes de outras solicitações. Note que é cobrado uma taxa por este serviço de R$50,00"
+          bg="red.400"
+          borderRadius={"8px"}
+          color="white"
+        >
+          <Button>
+            <IoHelp/>
+          </Button>
+        </Tooltip>
       </div>
     </div>
   );
