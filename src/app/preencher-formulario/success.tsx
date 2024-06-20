@@ -141,6 +141,7 @@ const PreencherFormulario: React.FC = () => {
       return;
     }
     const jsonToSend = {
+      prioridade: tipoModal === "e",
       usuario: {
         id_usuario: 0,
         nome: formValues.nome,
