@@ -13,6 +13,9 @@ const config: Config = {
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         "degrade": "linear-gradient(94deg, #1B3CE9 29.04%, #182D9E 100%)",
       },
+      fontFamily: {
+        "inter": "Inter, Arial, sans-serif"
+      }
     },
   },
   important: true,

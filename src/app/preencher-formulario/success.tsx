@@ -117,10 +117,9 @@ const PreencherFormulario: React.FC = () => {
   const SendModal = (tipoModal: string) => {
     setIsLoading(true);
     const anyFieldEmpty = Object.entries(formValues).some(([key, value]) => {
-      if (key === "imei") {
+      if (t !== "smartphone" && key === "imei") {
         return false;
       }
-
       return value === "";
     });
 
@@ -431,14 +430,15 @@ const PreencherFormulario: React.FC = () => {
           {isLoading ? <Spinner /> : "Enviar como emergencial"}
         </button>
         <Tooltip
+          fontFamily={"Inter"}
           hasArrow
           label="O envio emergencial torna sua solicitação como prioridade, sendo resolvida antes de outras solicitações. Note que é cobrado uma taxa por este serviço de R$50,00"
-          bg="red.400"
+          bg="rgb(185, 28, 28)"
           borderRadius={"8px"}
           color="white"
         >
           <Button>
-            <IoHelp/>
+            <IoHelp color="rgb(185, 28, 28)" />
           </Button>
         </Tooltip>
       </div>
