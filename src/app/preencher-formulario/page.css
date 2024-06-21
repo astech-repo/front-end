@@ -68,3 +68,25 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.border-red-600, .text-red-600 {
+  animation: invalid .4s linear;
+}
+
+@keyframes invalid {
+  0% {
+    transform: translateX(0);
+  } 
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

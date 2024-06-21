@@ -411,7 +411,8 @@ const PreencherFormulario: React.FC = () => {
         <ModalSuccess onModalClose={onClose} isModalOpen={isOpen} />
       ) : (
         <ModalPagamento onModalClose={onClose} isModalOpen={isOpen} />
-      )}
+        )}
+      <ModalPagamento onModalClose={onClose} isModalOpen={true} />
 
       <div className="flex justify-center items-center gap-6">
         <button

@@ -24,9 +24,7 @@ export default function RootLayout({
       </head>
       <body className={days_one.className}>
         <Providers>
-          <Header />
-          {children}
-          <Footer />
+          <Header /> {children} <Footer />
         </Providers>
       </body>
     </html>
