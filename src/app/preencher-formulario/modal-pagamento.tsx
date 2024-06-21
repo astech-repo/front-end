@@ -6,10 +6,13 @@ import {
   ModalOverlay,
   Checkbox,
   useToast,
+  Spinner,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import comprasegura from "../../../public/compra-segura-vetor-1.png";
 import InputMask from "react-input-mask";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 interface ModalProps {
   isModalOpen: boolean;
@@ -73,6 +76,8 @@ const ModalPagamento: React.FC<ModalProps> = ({
     useState<FormValidation>(initialValidation);
   const [isValid, setIsValid] = useState<boolean>(true);
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -80,8 +85,6 @@ const ModalPagamento: React.FC<ModalProps> = ({
       ...formValues,
       [name]: value,
     });
-
-    // Validar campos ao mudar o input
     validateField(name, value);
   };
 
@@ -92,31 +95,34 @@ const ModalPagamento: React.FC<ModalProps> = ({
       case "cc":
         isValidField =
           value.replace(/\s/g, "").length === 16 &&
-          /^\d+$/.test(value.replace(/\s/g, ""));
+          /^\d+$/.test(value.replace(/\s/g, "")) &&
+          value !== "";
         break;
       case "cvc":
-        isValidField = value.length === 3 && /^\d+$/.test(value);
+        isValidField =
+          value.length === 3 && /^\d+$/.test(value) && value !== "";
         break;
       case "data":
-        isValidField = /^\d{2}\/\d{2}$/.test(value);
+        isValidField = /^\d{2}\/\d{2}$/.test(value) && value !== "";
         break;
       case "nome":
-        isValidField = value.trim().length > 0;
+        isValidField = value.trim().length > 1 && value !== "";
         break;
       case "cpf":
-        isValidField = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(value);
+        isValidField =
+          /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(value) && value !== "";
         break;
       case "cep":
-        isValidField = /^\d{5}-\d{3}$/.test(value);
+        isValidField = /^\d{5}-\d{3}$/.test(value) && value !== "";
         break;
       case "uf":
-        isValidField = /^[A-Za-z]{2}$/.test(value);
+        isValidField = /^[A-Za-z]{2}$/.test(value) && value !== "";
         break;
       case "logradouro":
-        isValidField = value.trim().length > 0;
+        isValidField = value.trim().length > 1 && value !== "";
         break;
       case "numero":
-        isValidField = value.trim().length > 0;
+        isValidField = value.trim().length > 1 && value !== "";
         break;
       default:
         break;
@@ -130,14 +136,23 @@ const ModalPagamento: React.FC<ModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
 
-    // Validar todos os campos antes de submeter
     const isFormValid = validateForm();
 
     if (isFormValid) {
-      console.log(formValues); // Aqui você pode prosseguir com a submissão do formulário
-      setFormValues(initialFormValues); // Limpa os valores do formulário após o envio
-      onModalClose(); // Fecha o modal após o envio
+      setTimeout(() => {
+        onOpen();
+      }, 2000);
+
+      console.log(formValues); // This is where you'd handle your form submission logic
+
+      setFormValues(initialFormValues);
+      setFormValidation(initialValidation);
+      onModalClose();
     } else {
       setIsValid(false);
       toast({
@@ -146,12 +161,11 @@ const ModalPagamento: React.FC<ModalProps> = ({
         status: "error",
         duration: 5000,
         isClosable: false,
-      }); // Define o estado de validação como falso para mostrar erros
+      });
     }
   };
 
   const validateForm = () => {
-    // Validação dos campos do formulário
     return (
       formValidation.cc &&
       formValidation.cvc &&
@@ -178,11 +192,10 @@ const ModalPagamento: React.FC<ModalProps> = ({
         <div className="font-inter flex flex-col items-center justify-center gap-4 py-6">
           <h1 className="font-bold text-xl">Finalizar pagamento</h1>
           <form
-            className="flex justify-center items-wrap w-full h-fit"
             onSubmit={handleSubmit}
+            className="flex justify-center items-wrap w-full h-fit"
           >
             <div className="flex flex-col items-center justify-center w-1/2 border-r-2 gap-4 border-gray-600">
-              {/* Número do cartão */}
               <section
                 className={`w-11/12 flex items-center justify-between ${
                   !isValid && "border-red-600"
@@ -540,11 +553,32 @@ const ModalPagamento: React.FC<ModalProps> = ({
 
               {/* Botão de finalizar pagamento */}
               <button
+                disabled={
+                  JSON.stringify(formValues) ===
+                  JSON.stringify(initialFormValues)
+                }
                 type="submit"
-                className="text-white bg-degrade rounded-md shadow-md px-6 py-2 text-center w-11/12 font-bold text-xl transition-all hover:opacity-75"
+                className="text-white disabled:cursor-not-allowed bg-degrade rounded-md shadow-md px-6 py-2 text-center w-11/12 h-12 font-bold text-xl transition-all hover:opacity-75"
               >
-                Finalizar pagamento
+                {isLoading ? <Spinner /> : "Finalizar pagamento"}
               </button>
+
+              <Modal isOpen={isOpen} onClose={onClose} onOverlayClick={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalCloseButton />
+                  <div className="flex flex-col items-center justify-center gap-4 py-6">
+                    <FaRegCheckCircle className="text-green-600 text-8xl" />
+                    <h1 className="text-center text-xl">
+                      Pagamento efetuado com sucesso!
+                    </h1>
+                    <p className="text-balance text-center text-sm">
+                      Enviamos um e-mail para sua caixa de entrada sobre a
+                      solicitação.
+                    </p>
+                  </div>
+                </ModalContent>
+              </Modal>
 
               {/* Imagem de compra segura */}
               <Image
