@@ -16,6 +16,7 @@ import {
 import ModalSuccess from "./modal-success";
 import ModalPagamento from "./modal-pagamento";
 import { IoHelp } from "react-icons/io5";
+import axios from "axios";
 
 export interface FormValues {
   nome: string;
@@ -177,18 +178,32 @@ const PreencherFormulario: React.FC = () => {
         id_aparelho: 0,
       },
     };
-    // lógica para enviar o formulário
-
     setWhatModal(tipoModal);
 
-    console.log(jsonToSend);
-
-    setTimeout(() => {
+    if (whatModal === "n") {
+      axios
+        .post(`${process.env.url_base}/api/formulario/enviar`, jsonToSend)
+        .then(() => {
+          setTimeout(() => {
+            onOpen();
+          }, 2000);
+          setTimeout(() => {
+            onClose();
+          }, 8000);
+          window.location.href = "/home";
+        })
+        .catch((err) =>
+          toast({
+            title: "Envio não realizado",
+            description: err,
+            status: "error",
+            duration: 5000,
+            isClosable: false,
+          })
+        );
+    } else {
       onOpen();
-      setTimeout(() => {
-        onClose();
-      }, 8000);
-    }, 2000);
+    }
   };
 
   return (
@@ -414,8 +429,7 @@ const PreencherFormulario: React.FC = () => {
         <ModalSuccess onModalClose={onClose} isModalOpen={isOpen} />
       ) : (
         <ModalPagamento onModalClose={onClose} isModalOpen={isOpen} />
-        )}
-      <ModalPagamento onModalClose={onClose} isModalOpen={true} />
+      )}
 
       <div className="flex justify-center items-center gap-6">
         <button
