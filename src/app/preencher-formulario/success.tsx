@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./page.css";
 import { FormInput } from "./form-input";
 import { FormSection } from "./form-section";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect } from "next/navigation";
 import { BsChevronLeft } from "react-icons/bs";
 import { estados, garantias } from "./success.seed";
 import {
@@ -39,8 +39,11 @@ export interface FormValues {
 }
 
 const PreencherFormulario: React.FC = () => {
-  const searchParams = useSearchParams();
-  const t = searchParams.get("t");
+  const [t, setT] = useState<string>('')
+  useEffect(() => {
+    let local = window.localStorage
+    setT(local.getItem("tipo") ?? '')
+  }, [t])
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);

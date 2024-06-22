@@ -1,4 +1,4 @@
-import Link from "next/link";
+'use client'
 import React from "react";
 
 interface CardButtonProps {
@@ -9,13 +9,17 @@ interface CardButtonProps {
 }
 
 const CardButton: React.FC<CardButtonProps> = ({ icon, title, link, tipo }) => {
+
+const navegar = () => {
+localStorage.setItem('tipo', tipo)
+window.location.href = link
+}
+
   return (
-    <Link href={{pathname: link, query: {t: tipo}}}>
-      <div className="cursor-pointer transition-all hover:opacity-75 bg-gray-100 w-40 h-40 rounded-md shadow-xl flex flex-col items-center justify-center gap-4">
+      <div onClick={navegar} className="cursor-pointer transition-all hover:opacity-75 bg-gray-100 w-40 h-40 rounded-md shadow-xl flex flex-col items-center justify-center gap-4">
         <div className="text-7xl">{icon}</div>
         <div className="text-center text-balance">{title}</div>
       </div>
-    </Link>
   );
 };
 
