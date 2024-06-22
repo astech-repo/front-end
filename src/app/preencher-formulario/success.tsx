@@ -39,16 +39,51 @@ export interface FormValues {
   comportamentos: string;
 }
 
+interface JsonToSend {
+  prioridade: boolean;
+  usuario: {
+    id_usuario: number;
+    nome: string;
+    email: string;
+    telefone: string;
+    enderecoRua: string;
+    enderecoNumero: number;
+    enderecoEstado: string;
+    enderecoCep: string;
+    meioDeContato: string;
+  };
+  aparelho: {
+    id_aparelho: number;
+    tipoAparelho: string;
+    marca: string;
+    modelo: string;
+    imei: string;
+    numeroSerie: string;
+    estadoGarantia: boolean;
+    outrasEspecificacoes: string;
+    id_usuario: number;
+  };
+  problema: {
+    id_problema: number;
+    descricao: string;
+    conduta: string;
+    sintomas: string;
+    comportamento: string;
+    erroAlerta: string;
+    id_aparelho: number;
+  };
+}
+
 const PreencherFormulario: React.FC = () => {
-  const [t, setT] = useState<string>('')
+  const [t, setT] = useState<string>("");
   useEffect(() => {
-    let local = window.localStorage
-    setT(local.getItem("tipo") ?? '')
-  }, [t])
+    let local = window.localStorage;
+    setT(local.getItem("tipo") ?? "");
+  }, [t]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [whatModal, setWhatModal] = useState<string>("d");
+  const [whatModal, setWhatModal] = useState<string>("n");
 
   useEffect(() => {
     const handleRedirect = () => {
@@ -79,8 +114,43 @@ const PreencherFormulario: React.FC = () => {
     errosAlertas: "",
     comportamentos: "",
   };
+  const initialJsonToSend: JsonToSend = {
+    prioridade: true,
+    usuario: {
+      id_usuario: 0,
+      nome: "",
+      email: "",
+      telefone: "",
+      enderecoRua: "",
+      enderecoNumero: 0,
+      enderecoEstado: "",
+      enderecoCep: "",
+      meioDeContato: "",
+    },
+    aparelho: {
+      id_aparelho: 0,
+      tipoAparelho: "",
+      marca: "",
+      modelo: "",
+      imei: "",
+      numeroSerie: "",
+      estadoGarantia: false,
+      outrasEspecificacoes: "",
+      id_usuario: 0,
+    },
+    problema: {
+      id_problema: 0,
+      descricao: "",
+      conduta: "",
+      sintomas: "",
+      comportamento: "",
+      erroAlerta: "",
+      id_aparelho: 0,
+    },
+  };
 
   const [formValues, setFormValues] = useState<FormValues>(initialFormState);
+  const [jsonToSend, setJsonToSend] = useState<JsonToSend>(initialJsonToSend);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -144,7 +214,7 @@ const PreencherFormulario: React.FC = () => {
       });
       return;
     }
-    const jsonToSend = {
+    const jsonToSend: JsonToSend = {
       prioridade: tipoModal === "e",
       usuario: {
         id_usuario: 0,
@@ -178,9 +248,10 @@ const PreencherFormulario: React.FC = () => {
         id_aparelho: 0,
       },
     };
+    setJsonToSend(jsonToSend)
     setWhatModal(tipoModal);
 
-    if (whatModal === "n") {
+    if (tipoModal === "n") {
       axios
         .post(`${process.env.url_base}/api/formulario/enviar`, jsonToSend)
         .then(() => {
@@ -190,17 +261,17 @@ const PreencherFormulario: React.FC = () => {
           setTimeout(() => {
             onClose();
           }, 8000);
-          window.location.href = "/home";
         })
-        .catch((err) =>
+        .catch((err) => {
           toast({
             title: "Envio não realizado",
             description: err,
             status: "error",
             duration: 5000,
             isClosable: false,
-          })
-        );
+          });
+          console.log(err);
+        });
     } else {
       onOpen();
     }
@@ -428,7 +499,11 @@ const PreencherFormulario: React.FC = () => {
       {whatModal === "n" ? (
         <ModalSuccess onModalClose={onClose} isModalOpen={isOpen} />
       ) : (
-        <ModalPagamento onModalClose={onClose} isModalOpen={isOpen} />
+        <ModalPagamento
+          jsonToSend={jsonToSend}
+          onModalClose={onClose}
+          isModalOpen={isOpen}
+        />
       )}
 
       <div className="flex justify-center items-center gap-6">
